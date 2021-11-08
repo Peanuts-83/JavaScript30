@@ -6,7 +6,64 @@
 </head>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
+
 <script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let hue = 0;
+
+  ctx.strokeStyle = '#000'; // color
+  ctx.lineJoin = 'bevel';   // round bevel miter  // 2 lines join
+  ctx.lineCap = 'round';    // round butt square // shape of stamp
+  ctx.lineWidth = 100;
+
+  ctx.shadowColor = '#FFF';
+  ctx.shadowBlur = 5;       // shaddow blur      // def = 0
+  ctx.shadowOffsetX = 20;
+  ctx.shadowOffsetY = 20;
+
+
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function draw(e) {
+    // if not clicked mouse, don't draw
+    if (!isDrawing) return;
+
+    ctx.strokeStyle = `hsl(${hue}, 80%, 50%)`;  // color
+    const hueShaddow = hue + 90 > 360 ? (hue+90) - 360 : hue + 90;
+    ctx.lineWidth = hue/2;
+    if (hue > 90) {
+      ctx.lineWidth = 90 - (hue/2 - 90);
+    }
+    ctx.shadowColor = `hsl(${hueShaddow}, 100%, 50%)`;                    // shaddow
+    ctx.beginPath();
+    // start from
+    ctx.moveTo(lastX, lastY);
+    // go to
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++;
+    if (hue >= 360) {
+      hue = 0;
+    }
+    console.log(hueShaddow);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    draw(e);
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  /* canvas.addEventListener('mouseout', () =>  isDrawing = false); */
+
+
 </script>
 
 <style>

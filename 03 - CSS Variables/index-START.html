@@ -8,6 +8,10 @@
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
   <div class="controls">
+
+    <label for="rotate">Rotate:</label>
+    <input type="range" id="rotate" ame="rotate" min="0" max="360" value="10" data-sizing="deg">
+
     <label for="spacing">Spacing:</label>
     <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
@@ -18,13 +22,28 @@
     <input id="base" type="color" name="base" value="#ffc600">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img width="300px" src="https://www.mouvement-up.fr/wp-content/uploads/2020/01/eiffel-tower-1065067_1920-800x500.jpg">
 
   <style>
 
-    /*
-      misc styles, nothing to do with CSS variables
-    */
+    :root {
+      --base: orange;
+      --spacing: 10px;
+      --blur: 10px;
+      --rotate: 10deg;
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    img {
+      margin: 150px;
+      background: var(--base);
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+      rotate: var(--rotate);
+    }
 
     body {
       text-align: center;
@@ -45,6 +64,16 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+    inputs.forEach(input => input.addEventListener('change', handleChange));
+    inputs.forEach(input => input.addEventListener('mousemove', handleChange));
+
+    function handleChange() {
+      const image = document.querySelector('img');
+      let target = this.id;
+      let value = this.value + (this.dataset.sizing || '');
+      image.style.setProperty(`--${target}`, value);
+    }
   </script>
 
 </body>

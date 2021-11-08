@@ -15,7 +15,7 @@ body,html {
   flex: 1;
   min-height: 100vh;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .key {
@@ -24,7 +24,7 @@ body,html {
   margin: 1rem;
   font-size: 1.5rem;
   padding: 1rem .5rem;
-  transition: all .07s ease;
+  transition: all .07s;
   width: 10rem;
   text-align: center;
   color: white;
