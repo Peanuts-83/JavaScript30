@@ -17,9 +17,9 @@
   html {
     box-sizing: border-box;
   }
-  
-  *, *:before, *:after { 
-    box-sizing: inherit; 
+
+  *, *:before, *:after {
+    box-sizing: inherit;
   }
 
   div {
@@ -38,10 +38,26 @@
   .three {
     background: coral;
   }
+
 </style>
 
-<button></button>
+<button class="btn">TEST</button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const btn = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    //  e.stopPropagation() // stop bubbling
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false  // bubbling
+  }));
+  btn.addEventListener('click', logText, {
+    capture: true, // not bubbling
+    once: true
+  })
 
 </script>
 </body>

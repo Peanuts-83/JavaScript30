@@ -14,8 +14,10 @@
 
   const recognition = new SpeechRecognition();
   recognition.interimResults = true;
-  recognition.lang = 'en-US';
-  
+  recognition.lang = 'fr-FR';
+
+
+
   let p = document.createElement('p');
   const words = document.querySelector('.words');
   words.appendChild(p);
@@ -66,7 +68,7 @@
       position: relative;
       line-height: 3rem;
     }
-    
+
     p {
       margin: 0 0 3rem;
     }

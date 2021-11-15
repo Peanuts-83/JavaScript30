@@ -22,7 +22,8 @@
       <label for="pitch">Pitch:</label>
 
       <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
+      <textarea name="text">Hello! I love JavaScript 👍.
+        And I could speak about this for hours, you can bet!</textarea>
       <button id="stop">Stop!</button>
       <button id="speak">Speak</button>
 
@@ -30,11 +31,57 @@
 
 <script>
   const msg = new SpeechSynthesisUtterance();
+  const texte = document.querySelector('textarea[name=text]');
+  msg.text = texte.textContent;
+  let synth = window.speechSynthesis;   // needed for Firefox
   let voices = [];
   const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
+  const options = document.querySelectorAll('[type="range"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  function populateVoices() {
+    voices = synth.getVoices();
+    voicesDropdown.innerHTML = voices
+      .map(voice => `<option value="${voice.name}">${voice.name} ${voice.lang}</option>`)
+      .join('');
+  }
+
+  function setVoice() {
+    console.log(voicesDropdown.value)
+    msg.voice = voices.find(voice => voice.name === voicesDropdown.value);
+    toggle();
+  }
+
+  function toggle() {
+    speechSynthesis.cancel();
+    speechSynthesis.speak(msg);
+  }
+
+  function setOptions() {
+    console.log(this.name, this.value);
+    const option = this.name;
+    const value = this.value;
+    msg[option] = value;
+    toggle();
+  }
+
+  function updateText() {
+    msg.text = this.value;
+    toggle();
+  }
+
+  populateVoices(); // for firefox
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoices;   // for chrome
+  }
+
+  voicesDropdown.addEventListener('change', setVoice);
+  speakButton.addEventListener('click', setVoice);
+  stopButton.addEventListener('click', () => speechSynthesis.cancel());
+  options.forEach(option => option.addEventListener('change', setOptions));
+  texte.addEventListener('change', updateText);
+
 </script>
 
 </body>

@@ -10,26 +10,22 @@
   <div class="photobooth">
     <div class="controls">
       <button onClick="takePhoto()">Take Photo</button>
-<!--       <div class="rgb">
-        <label for="rmin">Red Min:</label>
+      <div class="rgb">
+        <label for="rmin">Red sat:</label>
         <input type="range" min=0 max=255 name="rmin">
-        <label for="rmax">Red Max:</label>
-        <input type="range" min=0 max=255 name="rmax">
-
-        <br>
-
-        <label for="gmin">Green Min:</label>
+        <label for="gmin">Green alpha:</label>
         <input type="range" min=0 max=255 name="gmin">
-        <label for="gmax">Green Max:</label>
-        <input type="range" min=0 max=255 name="gmax">
-
-        <br>
-
-        <label for="bmin">Blue Min:</label>
+        <label for="bmin">Blue alpha:</label>
         <input type="range" min=0 max=255 name="bmin">
-        <label for="bmax">Blue Max:</label>
-        <input type="range" min=0 max=255 name="bmax">
-      </div> -->
+      </div>
+      <div class="diverge">
+        <label for="red">Red sat:</label>
+        <input type="range" min=0 max=255 value=0 name="red">
+        <label for="green">Green sat:</label>
+        <input type="range" min=0 max=255 value=125 name="green">
+        <label for="blue">Blue sat:</label>
+        <input type="range" min=0 max=255 value=125 name="blue">
+      </div>
     </div>
 
     <canvas class="photo"></canvas>
@@ -39,6 +35,7 @@
 
   <audio class="snap" src="./snap.mp3" hidden></audio>
 
+  <script src="idb.js"></script>
   <script src="scripts.js"></script>
 
 </body>

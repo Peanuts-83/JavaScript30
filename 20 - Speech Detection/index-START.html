@@ -11,6 +11,27 @@
 
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;    // see recognition in direct
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  function recognize(e) {
+    [...e.results]
+      .forEach(el => {
+      if (el.isFinal) {
+        p.textContent = el[0].transcript;
+        p = document.createElement('p');
+        words.appendChild(p);
+      }
+    });
+  }
+
+  recognition.addEventListener('result', recognize);
+  recognition.addEventListener('end', recognition.start);
+  recognition.start();
 
 
 </script>
@@ -40,7 +61,7 @@
       position: relative;
       line-height: 3rem;
     }
-    
+
     p {
       margin: 0 0 3rem;
     }

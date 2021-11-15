@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <audio src="ouch.mp3" oncanplaythrough="console.log('Sound READY!')"></audio>
 
   <h1>Whack-a-mole! <span class="score">0</span></h1>
   <button onClick="startGame()">Start!</button>
@@ -33,9 +34,65 @@
   </div>
 
 <script>
+  const ouch = document.querySelector('audio');
   const holes = document.querySelectorAll('.hole');
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
+  let lastHole;
+  let timeUp = false;
+  let sound = false;
+
+  function randomHole() {
+    const hole = holes[Math.floor(Math.random() * holes.length)];
+    if (lastHole === hole) {
+      return randomHole();
+    }
+    lastHole = hole;
+    return hole;
+  }
+
+  function randomTime(min, max) {
+    const time = Math.round(Math.random() * (max - min) + min);
+    return time;
+  }
+
+  function peep() {
+    const hole = randomHole();
+    const time = randomTime(200,1000);
+    hole.classList.add('up');
+    setTimeout(() => {
+      hole.classList.remove('up');
+      if (!timeUp) peep();
+    }, time);
+  }
+
+  function hitMole() {
+    playSound();
+    scoreBoard.textContent = parseInt(scoreBoard.textContent) + 1;
+    this.classList.remove('up');
+  }
+
+  function playSound() {
+    if (sound) {
+      ouch.currentTime = 0;
+      sound = false;
+    }
+    sound = true;
+    ouch.play();
+  }
+
+  function startGame() {
+    scoreBoard.textContent = 0;
+    timeUp = false;
+    peep();
+    setTimeout(() => {
+    timeUp = true;
+    }, 10000);
+
+  }
+
+  moles.forEach(mole => mole.addEventListener('click', hitMole));
+  ouch.addEventListener('ended', () => sound = false);
 
 </script>
 </body>
